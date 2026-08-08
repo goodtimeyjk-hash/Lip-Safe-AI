@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>김영주 포트폴리오 | Lip-Safe AI On-Device Edge AI Showcase</title>
+  <meta name="description" content="여성 엣지AI & 헬스케어/안전 분야 개발자 김영주 님의 개인 포트폴리오 웹사이트 및 Lip-Safe AI 심화 프로젝트 쇼케이스" />
+  
+  <!-- Pretendard 및 JetBrains Mono 폰트 연결 -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- 디자인 토큰 및 글로벌 스타일시트 -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+  <!-- 최상위 포트폴리오 애플리케이션 감싸기 -->
+  <div class="app-container">
+    
+    <!-- 1.0 상단 네비게이션 헤더 영역 -->
+    <div id="header-container"></div>
+
+    <!-- 2.0 메인 콘텐츠 컨테이너 -->
+    <main class="app-main">
+      <div class="content-body">
+        
+        <!-- 2.1 개발자 김영주 프로필 & 자기소개 카드 -->
+        <div id="profile-container"></div>
+
+        <!-- 2.2 Lip-Safe AI 메인 프로젝트 히어로 쇼케이스 (99.2% / 0.3초 카운터) -->
+        <div id="hero-showcase-container"></div>
+
+        <!-- 2.3 어두운 조명 자동 보정 & 오프라인 엣지AI 판독 시뮬레이터 -->
+        <div id="edge-ai-simulator-container"></div>
+
+        <!-- 2.4 5종 마약 동시 감지 변색 색상 칩 컴포넌트 -->
+        <div id="chemical-sensors-container"></div>
+
+        <!-- 2.5 기존 시판 키트 vs Lip-Safe AI 고대비 차별점 비교표 Table -->
+        <div id="comparison-table-container"></div>
+
+        <!-- 2.6 하단 문의 & 소통 푸터 영역 -->
+        <div id="contact-footer-container"></div>
+      </div>
+    </main>
+
+    <!-- 3.0 비상 112 신고 모달 & 관리자 CMS 라이브 편집 모달 마운트 -->
+    <div id="emergency-modal-container"></div>
+    <div id="admin-modal-container"></div>
+
+  </div>
+
+  <!-- 메인 애플리케이션 진입점 ES Module -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

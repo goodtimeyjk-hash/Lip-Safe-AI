@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lip-Safe AI UI 컴포넌트 데모 쇼케이스 (Component Showcase)</title>
+  <meta name="description" content="design.md 기반 9종 독립 UI 컴포넌트 및 디자인 시스템 통합 데모 페이지" />
+
+  <!-- Pretendard 및 JetBrains Mono 폰트 연결 -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- 디자인 토큰 및 스타일시트 -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+
+  <style>
+    /* 데모 전용 레이아웃 및 탭 내비게이션 스타일 */
+    .demo-header-banner {
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid var(--border-strong);
+      padding: 24px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 600;
+    }
+    .demo-badge {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: #FFF;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: 800;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .demo-nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .demo-tab-btn {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .demo-tab-btn:hover, .demo-tab-btn.active {
+      background: var(--color-primary);
+      color: #FFFFFF;
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-neon-rose);
+    }
+    .demo-section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-secondary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .palette-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .swatch-item {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #FFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 90px;
+      box-shadow: var(--shadow-sm);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- 데모 전용 헤더 배너 & 컴포넌트 내비게이션 탭 -->
+    <div class="demo-header-banner">
+      <span class="demo-badge">DESIGN SYSTEM SHOWCASE DEMO</span>
+      <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary);">
+        Lip-Safe AI 프론트엔드 UI 컴포넌트 데모 쇼케이스
+      </h1>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px;">
+        여성 개발자 김영주 | design.md 규격 준수 | 독립 UI 컴포넌트 모음
+      </p>
+
+      <!-- 탭 바로가기 -->
+      <div class="demo-nav-tabs">
+        <button class="demo-tab-btn active" onclick="scrollToSection('sec-tokens')">🎨 컬러 & 버튼 파렛트</button>
+        <button class="demo-tab-btn" onclick="scrollToSection('sec-header')">📌 상단 헤더</button>
+        <button class="demo-tab-btn" onclick="scrollToSection('sec-profile')">👩‍💻 프로필 카드</button>
+        <button class="demo-tab-btn" onclick="scrollToSection('sec-hero')">🚀 히어로 쇼케이스</button>
+        <button class="demo-tab-btn" onclick="scrollToSection('sec-simulator')">🧪 엣지AI 시뮬레이터</button>
+        <button class="demo-tab-btn" onclick="scrollToSection('sec-sensors')">🧪 5종 마약 센서</button>
+        <button class="demo-tab-btn" onclick="scrollToSection('sec-table')">📊 차별점 비교표</button>
+        <button class="demo-tab-btn" onclick="scrollToSection('sec-footer')">💬 푸터 & 문의</button>
+      </div>
+    </div>
+
+    <!-- 컴포넌트 데모 본문 영역 -->
+    <main class="app-main">
+      <div class="content-body" style="padding-top: 24px;">
+
+        <!-- 1.0 디자인 토큰 & 버튼 규격 (LG/MD/SM) 파렛트 -->
+        <section id="sec-tokens" class="glass-card">
+          <div class="demo-section-title">
+            <span>🎨</span> 디자인 파렛트 토큰 & 규격별 버튼 (Button Sizes)
+          </div>
+
+          <!-- 메인 브랜드 컬러 스와치 -->
+          <div class="palette-swatch-grid">
+            <div class="swatch-item" style="background: #E11D48;">
+              <span>Lip-Safe Rose Magenta</span>
+              <code>#E11D48</code>
+            </div>
+            <div class="swatch-item" style="background: #06B6D4;">
+              <span>Safety Shield Cyan</span>
+              <code>#06B6D4</code>
+            </div>
+            <div class="swatch-item" style="background: #8B5CF6;">
+              <span>On-Device Edge AI Purple</span>
+              <code>#8B5CF6</code>
+            </div>
+            <div class="swatch-item" style="background: #0F172A; border: 1px solid var(--border-strong);">
+              <span>Deep Slate Navy (Bg)</span>
+              <code>#0F172A</code>
+            </div>
+          </div>
+
+          <!-- 규격별 버튼 라인업 (LG 48px, MD 40px, SM 32px) -->
+          <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px;">
+            🔘 규격별 버튼 배리에이션 (LG 48px / MD 40px / SM 32px)
+          </h4>
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+            <button class="btn btn-lg btn-primary">LG (48px) Rose Primary</button>
+            <button class="btn btn-md btn-secondary">MD (40px) Cyan Secondary</button>
+            <button class="btn btn-sm btn-outline">SM (32px) Outline Glass</button>
+            <button class="btn btn-lg btn-danger-emergency">🚨 112 Emergency Pulse</button>
+          </div>
+        </section>
+
+        <!-- 2.0 상단 헤더 컴포넌트 데모 -->
+        <section id="sec-header">
+          <div class="demo-section-title">📌 1.0 상단 네비게이션 헤더 컴포넌트 (Header.js)</div>
+          <div id="demo-header-target"></div>
+        </section>
+
+        <!-- 3.0 개발자 프로필 카드 컴포넌트 데모 -->
+        <section id="sec-profile">
+          <div class="demo-section-title">👩‍💻 2.0 개발자 김영주 프로필 카드 컴포넌트 (ProfileCard.js)</div>
+          <div id="demo-profile-target"></div>
+        </section>
+
+        <!-- 4.0 히어로 쇼케이스 컴포넌트 데모 -->
+        <section id="sec-hero">
+          <div class="demo-section-title">🚀 3.0 Lip-Safe AI 메인 히어로 쇼케이스 컴포넌트 (HeroShowcase.js)</div>
+          <div id="demo-hero-target"></div>
+        </section>
+
+        <!-- 5.0 엣지AI 시뮬레이터 컴포넌트 데모 -->
+        <section id="sec-simulator">
+          <div class="demo-section-title">🧪 4.0 온디바이스 엣지AI 조도 보정 시뮬레이터 컴포넌트 (EdgeAISimulator.js)</div>
+          <div id="demo-simulator-target"></div>
+        </section>
+
+        <!-- 6.0 5종 마약 변색 센서 컴포넌트 데모 -->
+        <section id="sec-sensors">
+          <div class="demo-section-title">🧪 5.0 립스틱 스틱 5종 마약 변색 색상 칩 컴포넌트 (ChemicalSensors.js)</div>
+          <div id="demo-sensors-target"></div>
+        </section>
+
+        <!-- 7.0 차별점 비교표 Table 데모 -->
+        <section id="sec-table">
+          <div class="demo-section-title">📊 6.0 기존 키트 대비 차별점 고대비 비교표 Table 컴포넌트 (ComparisonTable.js)</div>
+          <div id="demo-table-target"></div>
+        </section>
+
+        <!-- 8.0 하단 푸터 & 문의 폼 데모 -->
+        <section id="sec-footer">
+          <div class="demo-section-title">💬 7.0 하단 문의 푸터 & 원터치 복사 컴포넌트 (ContactFooter.js)</div>
+          <div id="demo-footer-target"></div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- 비상 신고 & 관리자 CMS 모달 마운트 -->
+    <div id="demo-emergency-modal-target"></div>
+    <div id="demo-admin-modal-target"></div>
+
+  </div>
+
+  <!-- 스크롤 이동 헬퍼 스크립트 -->
+  <script>
+    function scrollToSection(id) {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  </script>
+
+  <!-- 컴포넌트 데모 바인딩 모듈 -->
+  <script type="module">
+    import { renderHeader } from './js/components/Header.js';
+    import { renderProfileCard } from './js/components/ProfileCard.js';
+    import { renderHeroShowcase } from './js/components/HeroShowcase.js';
+    import { renderEdgeAISimulator } from './js/components/EdgeAISimulator.js';
+    import { renderChemicalSensors } from './js/components/ChemicalSensors.js';
+    import { renderComparisonTable } from './js/components/ComparisonTable.js';
+    import { renderEmergencyReportModal } from './js/components/EmergencyReportModal.js';
+    import { renderAdminEditModal } from './js/components/AdminEditModal.js';
+    import { renderContactFooter } from './js/components/ContactFooter.js';
+    import { showToast } from './js/utils/notifications.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeader(document.getElementById('demo-header-target'));
+      renderProfileCard(document.getElementById('demo-profile-target'));
+      renderHeroShowcase(document.getElementById('demo-hero-target'));
+      renderEdgeAISimulator(document.getElementById('demo-simulator-target'));
+      renderChemicalSensors(document.getElementById('demo-sensors-target'));
+      renderComparisonTable(document.getElementById('demo-table-target'));
+      renderContactFooter(document.getElementById('demo-footer-target'));
+      renderEmergencyReportModal(document.getElementById('demo-emergency-modal-target'));
+      renderAdminEditModal(document.getElementById('demo-admin-modal-target'));
+
+      showToast('🎨 Component Showcase 데모 페이지가 렌더링되었습니다.', 'info');
+    });
+  </script>
+</body>
+</html>

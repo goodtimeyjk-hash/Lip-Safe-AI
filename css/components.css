@@ -1,0 +1,299 @@
+/* ==========================================================================
+   Lip-Safe AI & 개인 포트폴리오 - UI 컴포넌트 전용 스타일시트
+   (버튼 LG/MD/SM, 모달, 5종 변색 색상 칩, 차별점 비교표, 비상 신고 애니메이션)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. 헤더 네비게이션 & 관리자 로그인 버튼
+   -------------------------------------------------------------------------- */
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 36px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: var(--backdrop-blur);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.header-logo-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: var(--shadow-neon-rose);
+}
+
+.header-title-text {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   2. 버튼 시스템 (LG 48px / MD 40px / SM 32px)
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 규격별 사이즈 */
+.btn-lg {
+  height: 48px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.btn-md {
+  height: 40px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+}
+
+.btn-sm {
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+}
+
+/* 스타일 배리에이션 */
+.btn-primary {
+  background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px var(--color-primary-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-neon-rose);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px var(--color-secondary-glow);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-primary);
+}
+
+/* 🚨 112 원터치 긴급 신고 비상 버튼 */
+.btn-danger-emergency {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  color: #FFFFFF;
+  font-weight: 800;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
+  animation: pulse-danger 1.8s infinite ease-in-out;
+}
+
+.btn-danger-emergency:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 28px rgba(239, 68, 68, 0.9);
+}
+
+/* --------------------------------------------------------------------------
+   3. 5종 마약 감지 변색 색상 칩 (Chemical Swatches)
+   -------------------------------------------------------------------------- */
+.sensor-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.sensor-chip {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all var(--transition-fast);
+}
+
+.sensor-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--chip-color, var(--color-primary));
+}
+
+.sensor-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--chip-color, #FFF);
+  box-shadow: 0 0 10px var(--chip-color, #FFF);
+}
+
+/* --------------------------------------------------------------------------
+   4. 기존 키트 대비 차별점 고대비 비교표 (Comparison Table)
+   -------------------------------------------------------------------------- */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-card);
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.matrix-table th, .matrix-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.matrix-table th {
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.matrix-table th.highlight-col, .matrix-table td.highlight-col {
+  background: rgba(225, 29, 72, 0.08);
+  border-left: 1px solid rgba(225, 29, 72, 0.3);
+  border-right: 1px solid rgba(225, 29, 72, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   5. 모달 오버레이 & 폼 스타일
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: var(--backdrop-blur);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: var(--bg-surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: var(--shadow-lg);
+  transform: scale(0.95);
+  transition: transform var(--transition-bounce);
+}
+
+.modal-overlay.active .modal-box {
+  transform: scale(1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   6. 키프레임 애니메이션
+   -------------------------------------------------------------------------- */
+@keyframes pulse-danger {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 26px rgba(239, 68, 68, 0.85);
+    transform: scale(1.03);
+  }
+}

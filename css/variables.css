@@ -1,0 +1,64 @@
+/* ==========================================================================
+   Lip-Safe AI & 개인 포트폴리오 - 디자인 토큰 및 CSS 변수 (from design.md)
+   모든 변수는 design.md 스펙에 준수하여 작성되었습니다.
+   ========================================================================== */
+:root {
+  /* 메인 브랜드 및 액센트 컬러 토큰 */
+  --color-primary: #E11D48;         /* Lip-Safe Rose Magenta (립스틱 스틱 / 메인 브랜드) */
+  --color-primary-hover: #BE123C;
+  --color-primary-glow: rgba(225, 29, 72, 0.4);
+
+  --color-secondary: #06B6D4;       /* Safety Shield Cyan (엣지AI / 안전 기술) */
+  --color-secondary-hover: #0891B2;
+  --color-secondary-glow: rgba(6, 182, 212, 0.35);
+
+  --color-accent-purple: #8B5CF6;   /* 온디바이스 AI TFLite 연산 강조 */
+  --color-accent-gold: #F59E0B;     /* 어두운 조명 보정 및 주의 토큰 */
+
+  /* 다크 테마 배경 및 표면 컬러 토큰 (Sleek Dark Theme) */
+  --bg-app: #0F172A;                /* Deep Slate Navy (최상위 배경) */
+  --bg-surface-card: #1E293B;       /* Dark Slate Card (카드 및 패널) */
+  --bg-surface-elevated: #334155;   /* 드롭다운, 모달 표면 */
+  --bg-surface-glass: rgba(30, 41, 59, 0.75); /* 서리 유리 (Glassmorphism) 반투명 */
+
+  /* 상태별 알림 컬러 */
+  --color-success: #22C55E;         /* 감지 음성 / 완납 / 정상 구동 */
+  --color-success-bg: rgba(34, 197, 94, 0.15);
+  --color-danger: #EF4444;          /* 마약 반응 감지 / 112 긴급 신고 */
+  --color-danger-bg: rgba(239, 68, 68, 0.2);
+  --color-warning: #F59E0B;         /* 어두운 조명 보정 안내 */
+  --color-warning-bg: rgba(245, 158, 11, 0.15);
+
+  /* 텍스트 및 경계선 컬러 */
+  --text-primary: #F8FAFC;          /* 메인 헤드라인 / 본문 (Off-White) */
+  --text-secondary: #94A3B8;        /* 서브 라벨 및 설명글 */
+  --text-tertiary: #64748B;         /* 디포커스 / 비활성화 텍스트 */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-glow-rose: rgba(225, 29, 72, 0.5);
+  --border-glow-cyan: rgba(6, 182, 212, 0.5);
+
+  /* 타이포그래피 폰트 패밀리 */
+  --font-family-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'JetBrains Mono', monospace;
+
+  /* 유리모피즘 효과 및 글로우 그림자 */
+  --backdrop-blur: blur(12px);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-neon-rose: 0 0 20px rgba(225, 29, 72, 0.45);
+  --shadow-neon-cyan: 0 0 20px rgba(6, 182, 212, 0.4);
+  --shadow-neon-purple: 0 0 20px rgba(139, 92, 246, 0.4);
+
+  /* 기하학 모서리 곡률 및 애니메이션 타이밍 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}

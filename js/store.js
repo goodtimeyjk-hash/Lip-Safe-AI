@@ -1,15 +1,16 @@
 /**
- * Lip-Safe AI & 개인 포트폴리오 - 중앙 상태 관리 Store
- * 김영주 님의 프로필, 관리자 CMS 세션, Lip-Safe AI 엣지AI 판독 시뮬레이션 상태를 중앙 관리합니다.
+ * Lip-Safe AI - 중앙 상태 관리 Store
+ * 제작자 김영주 님의 소개 정보, 관리자 CMS 세션, Lip-Safe AI 엣지AI 판독 시뮬레이션 상태를 중앙 관리합니다.
  * (모든 주석 한글 작성)
  */
 import { formatAccuracy, formatResponseTime } from './utils/formatters.js';
 
+const STORAGE_KEY = 'lip_safe_app_data';
 
-class PortfolioStore {
+class LipSafeStore {
   constructor() {
-    // 1. 김영주 님 프로필 및 자기소개 기본 데이터
-    this.profile = {
+    // 기본 초기 데이터 정의
+    this.defaultProfile = {
       name: '김영주',
       title: '온디바이스 엣지AI & 헬스케어/안전 분야 전문 개발자 / 기획자',
       slogan: '어두운 조명에서도 0.3초 만에 무색무취 약물을 판독하는 Lip-Safe AI 기술로 안전한 사회를 만듭니다.',
@@ -31,22 +32,54 @@ class PortfolioStore {
       github: 'https://github.com/youngju-kim'
     };
 
-
-    // 2. 관리자 인증 및 CMS 편집 세션 상태 (Supabase Auth 연동)
-    this.isAdmin = false;
-    this.camouflagedMode = false; // 위장 UI 모드 토글 (일반 뷰티 앱으로 화면 전환)
-
-
-    // 3. Lip-Safe AI 엣지AI 판독 및 센싱 실증 데이터
-    this.metrics = {
+    this.defaultMetrics = {
       accuracy: 99.2,         // 판독 정확도 (퍼센트)
       responseTime: 0.3,      // 처리 속도 (초)
       drugTypesCount: 5,      // 동시 감지 마약 종류 수
       lowLightAccuracy: 98.5  // 어두운 조명 (10 lux 이하) 환경 판독 성공률
     };
 
+    this.defaultProjects = [
+      {
+        id: 'work-1',
+        title: 'Lip-Safe AI On-Device Mobile App',
+        category: 'Mobile AI & Healthcare',
+        period: '2026.01 - 2026.08',
+        tags: ['Flutter', 'TFLite', 'OpenCV', 'iOS/Android'],
+        summary: '클럽 및 음영 환경에서도 0.3초 내 무색무취 마약 변색 패턴을 99.2% 정확도로 자동 판독하는 엣지AI 모바일 앱',
+        thumbnail: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80',
+        link: 'https://github.com/youngju-kim/lip-safe-app'
+      },
+      {
+        id: 'work-2',
+        title: 'Low-Light Automated Image Processor',
+        category: 'Algorithm & Computer Vision',
+        period: '2025.09 - 2025.12',
+        tags: ['OpenCV', 'Low-Light Enhancement', 'C++', 'Python'],
+        summary: '10 lux 이하의 초저조도 클럽 조도 환경에서 립스틱 스틱 센서 색상을 선명하게 인핸스해주는 모바일 전처리 알고리즘',
+        thumbnail: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80',
+        link: 'https://github.com/youngju-kim/lowlight-processor'
+      },
+      {
+        id: 'work-3',
+        title: '112 GPS One-Touch Emergency Gateway',
+        category: 'Safety & Emergency Infrastructure',
+        period: '2025.05 - 2025.08',
+        tags: ['GPS Location API', 'SMS Gateway', 'Camouflage UI'],
+        summary: '위급 상황 시 3초 카운트다운 후 경찰청 112 및 지정 보호자에게 실시간 위치와 SOS 문자를 전송하는 긴급 연동 게이트웨이',
+        thumbnail: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&auto=format&fit=crop&q=80',
+        link: 'https://github.com/youngju-kim/emergency-gateway'
+      }
+    ];
 
-    // 4. 5종 마약 동시 감지 변색 센서 반응 상태
+    // 관리자 인증 및 화면 뷰 세션 상태
+    this.isAdmin = false;
+    this.camouflagedMode = false;
+
+    // 시뮬레이터 조명 상태 (Lux 단위)
+    this.currentLux = 8;
+
+    // 5종 마약 동시 감지 변색 센서 반응 상태
     this.chemicalSensors = [
       { id: 'ghb', name: 'GHB (물뽕)', color: '#8B5CF6', status: '음성 (안전)', desc: '보라색 무반응' },
       { id: 'ketamine', name: '케타민 (Ketamine)', color: '#06B6D4', status: '음성 (안전)', desc: '시안 무반응' },
@@ -55,17 +88,69 @@ class PortfolioStore {
       { id: 'mdma', name: 'MDMA (엑스터시)', color: '#10B981', status: '음성 (안전)', desc: '에메랄드 무반응' }
     ];
 
-
-    // 5. 시뮬레이터 조명 상태 (Lux 단위)
-    this.currentLux = 8; // 8 lux (클럽/음영 환경)
-
     // 구독자 리스너 배열
     this.listeners = [];
+
+    // 로컬스토리지 데이터 복원 시도
+    this.loadFromLocalStorage();
+  }
+
+  /**
+   * 로컬스토리지에서 저장된 데이터를 불러옵니다.
+   */
+  loadFromLocalStorage() {
+    try {
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        this.profile = parsed.profile || JSON.parse(JSON.stringify(this.defaultProfile));
+        this.metrics = parsed.metrics || JSON.parse(JSON.stringify(this.defaultMetrics));
+        this.projects = parsed.projects || JSON.parse(JSON.stringify(this.defaultProjects));
+        return true;
+      }
+    } catch (e) {
+      console.warn('로컬스토리지 불러오기 오류:', e);
+    }
+
+    // 저장된 데이터가 없는 경우 기본값 적용
+    this.profile = JSON.parse(JSON.stringify(this.defaultProfile));
+    this.metrics = JSON.parse(JSON.stringify(this.defaultMetrics));
+    this.projects = JSON.parse(JSON.stringify(this.defaultProjects));
+    return false;
+  }
+
+  /**
+   * 현재 상태 데이터를 로컬스토리지에 저장합니다.
+   */
+  saveToLocalStorage() {
+    try {
+      const dataToSave = {
+        profile: this.profile,
+        metrics: this.metrics,
+        projects: this.projects,
+        updatedAt: new Date().toISOString()
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+      return true;
+    } catch (e) {
+      console.error('로컬스토리지 저장 오류:', e);
+      return false;
+    }
+  }
+
+  /**
+   * 초기 기본 데이터로 원복하고 로컬스토리지 데이터를 갱신합니다.
+   */
+  resetToDefaultData() {
+    this.profile = JSON.parse(JSON.stringify(this.defaultProfile));
+    this.metrics = JSON.parse(JSON.stringify(this.defaultMetrics));
+    this.projects = JSON.parse(JSON.stringify(this.defaultProjects));
+    this.saveToLocalStorage();
+    this.notify();
   }
 
   /**
    * 구독자(컴포넌트) 등록 함수
-   * @param {Function} listener - 상태 변경 시 실행될 콜백 함수
    */
   subscribe(listener) {
     this.listeners.push(listener);
@@ -75,16 +160,14 @@ class PortfolioStore {
   }
 
   /**
-   * 등록된 모든 구독자에게 상태 변경 이벤트를 전달합니다.
+   * 모든 구독자에게 상태 변경 이벤트를 전달합니다.
    */
   notify() {
     this.listeners.forEach(l => l(this));
   }
 
   /**
-   * 관리자 서명 인증 및 CMS 로그인 처리
-   * @param {string} password - 관리자 비밀번호
-   * @returns {boolean} 인증 성공 여부
+   * 관리자 서명 인증 및 로그인 처리
    */
   loginAdmin(password) {
     if (password === 'admin1234' || password === 'youngju2026') {
@@ -104,16 +187,93 @@ class PortfolioStore {
   }
 
   /**
-   * 관리자 CMS 모드에서 프로필 문구를 수정합니다.
-   * @param {Object} updatedProfile - 수정된 프로필 객체
+   * 제작자 소개 프로필 정보 업데이트
    */
   updateProfile(updatedProfile) {
     this.profile = { ...this.profile, ...updatedProfile };
+    this.saveToLocalStorage();
     this.notify();
   }
 
   /**
-   * 위장 UI 모드를 토글합니다 (위급 상황 시 뷰티 립스틱 앱 화면으로 오버레이)
+   * 실증 데이터 메트릭 수치 업데이트
+   */
+  updateMetrics(updatedMetrics) {
+    this.metrics = { ...this.metrics, ...updatedMetrics };
+    this.saveToLocalStorage();
+    this.notify();
+  }
+
+  /**
+   * 보유 기술 스택 태그 추가
+   */
+  addSkill(name, category = 'General') {
+    if (!name || this.profile.skills.some(s => s.name.toLowerCase() === name.toLowerCase())) {
+      return false;
+    }
+    this.profile.skills.push({ name, category });
+    this.saveToLocalStorage();
+    this.notify();
+    return true;
+  }
+
+  /**
+   * 보유 기술 스택 태그 삭제
+   */
+  deleteSkill(name) {
+    this.profile.skills = this.profile.skills.filter(s => s.name !== name);
+    this.saveToLocalStorage();
+    this.notify();
+  }
+
+  /**
+   * 신규 서비스 작업물(프로젝트) 추가
+   */
+  addProject(projectData) {
+    const newProject = {
+      id: 'work-' + Date.now(),
+      title: projectData.title || '새 작업물',
+      category: projectData.category || 'Mobile & Web',
+      period: projectData.period || '2026.08',
+      tags: Array.isArray(projectData.tags) ? projectData.tags : (projectData.tags ? projectData.tags.split(',').map(t => t.trim()) : ['Lip-Safe AI']),
+      summary: projectData.summary || '',
+      thumbnail: projectData.thumbnail || 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80',
+      link: projectData.link || 'https://github.com/youngju-kim'
+    };
+    this.projects.unshift(newProject);
+    this.saveToLocalStorage();
+    this.notify();
+    return newProject;
+  }
+
+  /**
+   * 기존 작업물(프로젝트) 수정
+   */
+  updateProject(id, updatedData) {
+    const index = this.projects.findIndex(p => p.id === id);
+    if (index !== -1) {
+      if (typeof updatedData.tags === 'string') {
+        updatedData.tags = updatedData.tags.split(',').map(t => t.trim());
+      }
+      this.projects[index] = { ...this.projects[index], ...updatedData };
+      this.saveToLocalStorage();
+      this.notify();
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * 작업물(프로젝트) 삭제
+   */
+  deleteProject(id) {
+    this.projects = this.projects.filter(p => p.id !== id);
+    this.saveToLocalStorage();
+    this.notify();
+  }
+
+  /**
+   * 위장 UI 모드 토글
    */
   toggleCamouflageMode() {
     this.camouflagedMode = !this.camouflagedMode;
@@ -121,8 +281,7 @@ class PortfolioStore {
   }
 
   /**
-   * 시뮬레이터의 조명 Lux 값을 변경하고 AI 연산 상태를 갱신합니다.
-   * @param {number} lux - 조명 조도 값 (0 ~ 100 lux)
+   * 시뮬레이터 조명 Lux 값 변경
    */
   setAmbientLux(lux) {
     this.currentLux = lux;
@@ -130,18 +289,18 @@ class PortfolioStore {
   }
 
   /**
-   * 포맷팅된 정확도 문자열을 반환합니다.
+   * 포맷팅된 정확도 문자열 반환
    */
   getAccuracyString() {
     return formatAccuracy(this.metrics.accuracy);
   }
 
   /**
-   * 포맷팅된 반응 속도 문자열을 반환합니다.
+   * 포맷팅된 반응 속도 문자열 반환
    */
   getResponseTimeString() {
     return formatResponseTime(this.metrics.responseTime);
   }
 }
 
-export const store = new PortfolioStore();
+export const store = new LipSafeStore();

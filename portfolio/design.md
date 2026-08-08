@@ -1,10 +1,10 @@
-# [Design System] 개인 포트폴리오 웹사이트 & Lip-Safe AI UI/UX 디자인 가이드라인
+# [Design System] Lip-Safe AI UI/UX 디자인 가이드라인
 
 | 항목 | 내용 |
 | :--- | :--- |
-| **프로젝트명** | 김영주 개인 포트폴리오 & Lip-Safe AI 엣지AI 기술 쇼케이스 웹사이트 |
-| **문서 버전** | v1.0.0 |
-| **작성자** | UI/UX 디자인 전문가 & 프론트엔드 리드 (김영주) |
+| **프로젝트명** | Lip-Safe AI 엣지AI 기술 쇼케이스 및 서비스 웹 애플리케이션 |
+| **문서 버전** | v1.1.0 |
+| **제작자** | UI/UX 디자인 및 프론트엔드 개발 (김영주) |
 | **프로젝트 폴더** | `portfolio` |
 | **연관 문서** | [PRD 문서 (prd.md)](file:///c:/Users/goodt/Desktop/Lip-Safe%20AI/portfolio/prd.md) |
 | **디자인 콘셉트** | Sleek Dark & Neon Rose Accent (Glassmorphism & High-Contrast Safety UI) |
@@ -109,7 +109,7 @@
 
 | 계계/위계 | 폰트 패밀리 | 크기 (Rem / Px) | 두께 (Weight) | 행간 (Line-height) | 자간 (Letter-spacing) | 용도 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Display H1** | Pretendard | `2.25rem (36px)` | 800 (ExtraBold) | 1.25 | -0.03em | 포트폴리오 메인 타이틀 & 립스틱 스틱 헤어로 |
+| **Display H1** | Pretendard | `2.25rem (36px)` | 800 (ExtraBold) | 1.25 | -0.03em | Lip-Safe AI 메인 타이틀 & 립스틱 스틱 헤어로 |
 | **Section H2** | Pretendard | `1.5rem (24px)` | 800 (ExtraBold) | 1.3 | -0.02em | 주요 섹션 타이틀 (프로필, 쇼케이스, 비교표) |
 | **Card H3** | Pretendard | `1.25rem (20px)` | 700 (Bold) | 1.35 | -0.01em | 엣지AI 판독 카드, 원터치 신고 모달 헤더 |
 | **Subtitle / Label**| Pretendard | `0.95rem (15px)` | 600 (SemiBold) | 1.4 | 0em | 기술 태그, 폼 라벨, 상태 뱃지 |

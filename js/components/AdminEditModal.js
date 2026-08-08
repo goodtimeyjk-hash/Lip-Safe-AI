@@ -112,9 +112,15 @@ export function renderAdminEditModal(container) {
     if (store.loginAdmin(pwd)) {
       loginOverlay.classList.remove('active');
       if (pwdInput) pwdInput.value = '';
-      showToast('👑 관리자 김영주 님으로 인증되었습니다. 라이브 CMS 편집이 활성화됩니다.', 'success');
+      showToast('👑 관리자 김영주 님으로 인증되었습니다. 관리자 전용 대시보드가 활성화되었습니다.', 'success');
+
+      // 관리자 대시보드 위치로 자동 포커싱 이동
+      const adminContainer = document.getElementById('admin-dashboard-container');
+      if (adminContainer) {
+        adminContainer.scrollIntoView({ behavior: 'smooth' });
+      }
     } else {
-      showToast('비밀번호가 올바르지 않습니다. (admin1234)', 'error');
+      showToast('비밀번호가 올바르지 않습니다. (admin1234 또는 youngju2026)', 'error');
     }
   });
 

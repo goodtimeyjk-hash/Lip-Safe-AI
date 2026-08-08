@@ -1,6 +1,6 @@
 /**
  * UI 컴포넌트: Header (상단 브랜딩 헤더 및 관리자 세션 제어)
- * 포트폴리오 웹사이트 상단 브랜딩, ⚙️ 관리자 CMS 로그인 버튼 및 🛡️ 위장 UI 모드 스위치를 제공합니다.
+ * Lip-Safe AI 서비스 상단 브랜딩, ⚙️ 관리자 CMS 로그인 버튼 및 🛡️ 위장 UI 모드 스위치를 제공합니다.
  * (모든 주석 한글 작성)
  */
 import { store } from '../store.js';
@@ -22,9 +22,9 @@ export function renderHeader(container) {
       <a href="#" class="header-logo">
         <div class="header-logo-icon">💄</div>
         <div>
-          <span class="header-title-text">Lip-Safe AI Portfolio</span>
+          <span class="header-title-text">Lip-Safe AI</span>
           <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600;">
-            김영주 | On-Device Edge AI Developer
+            제작자: 김영주 | On-Device Edge AI
           </div>
         </div>
       </a>
@@ -55,7 +55,7 @@ export function renderHeader(container) {
       if (store.camouflagedMode) {
         showToast('💄 일반 뷰티 립스틱 쇼핑몰 화면으로 위장 오버레이 전환되었습니다.', 'warning');
       } else {
-        showToast('🛡️ 메인 엣지AI 포트폴리오 화면으로 복귀되었습니다.', 'info');
+        showToast('🛡️ 메인 Lip-Safe AI 화면으로 복귀되었습니다.', 'info');
       }
     });
 

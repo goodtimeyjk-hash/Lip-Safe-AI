@@ -1,6 +1,6 @@
 /**
- * Lip-Safe AI & 개인 포트폴리오 - 메인 애플리케이션 진입점 (Main Entry Point)
- * 독립된 9개 UI 컴포넌트를 각각의 HTML 컨테이너에 마운트하고 뷰 초기화를 수행합니다.
+ * Lip-Safe AI - 메인 애플리케이션 진입점 (Main Entry Point)
+ * 독립된 UI 컴포넌트를 각각의 HTML 컨테이너에 마운트하고 뷰 초기화를 수행합니다.
  * (모든 주석 한글 작성)
  */
 import { renderHeader } from './components/Header.js';
@@ -9,6 +9,8 @@ import { renderHeroShowcase } from './components/HeroShowcase.js';
 import { renderEdgeAISimulator } from './components/EdgeAISimulator.js';
 import { renderChemicalSensors } from './components/ChemicalSensors.js';
 import { renderComparisonTable } from './components/ComparisonTable.js';
+import { renderWorksGallery } from './components/WorksGallery.js';
+import { renderAdminDashboard } from './components/AdminDashboard.js';
 import { renderEmergencyReportModal } from './components/EmergencyReportModal.js';
 import { renderAdminEditModal } from './components/AdminEditModal.js';
 import { renderContactFooter } from './components/ContactFooter.js';
@@ -42,20 +44,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const tableElem = document.getElementById('comparison-table-container');
   if (tableElem) renderComparisonTable(tableElem);
 
+  // 7. Lip-Safe AI 주요 작업물 및 프로젝트 카드 갤러리 마운트
+  const galleryElem = document.getElementById('works-gallery-container');
+  if (galleryElem) renderWorksGallery(galleryElem);
 
-  // 7. 하단 문의 푸터 마운트
+  // 8. 제작자 김영주 전용 관리자 대시보드 페이지 마운트
+  const adminDashboardElem = document.getElementById('admin-dashboard-container');
+  if (adminDashboardElem) renderAdminDashboard(adminDashboardElem);
+
+  // 9. 하단 문의 푸터 마운트
   const footerElem = document.getElementById('contact-footer-container');
   if (footerElem) renderContactFooter(footerElem);
 
-
-  // 8. 🚨 112 긴급 신고 모달 & ⚙️ 관리자 CMS 라이브 편집 모달 마운트
+  // 10. 🚨 112 긴급 신고 모달 & ⚙️ 관리자 Auth 로그인 모달 마운트
   const emergencyModalElem = document.getElementById('emergency-modal-container');
   if (emergencyModalElem) renderEmergencyReportModal(emergencyModalElem);
 
   const adminModalElem = document.getElementById('admin-modal-container');
   if (adminModalElem) renderAdminEditModal(adminModalElem);
 
-
-  // 9. 환영 토스트 알림 노출
-  showToast('👋 김영주 님의 Lip-Safe AI 포트폴리오에 오신 것을 환영합니다!', 'info', 3500);
+  // 11. 환영 토스트 알림 노출
+  showToast('👋 Lip-Safe AI (제작자: 김영주) 서비스에 오신 것을 환영합니다!', 'info', 3500);
 });

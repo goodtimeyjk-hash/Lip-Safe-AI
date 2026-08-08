@@ -1,9 +1,21 @@
 /**
- * Lip-Safe AI - 중앙 상태 관리 Store
- * 제작자 김영주 님의 소개 정보, 관리자 CMS 세션, Lip-Safe AI 엣지AI 판독 시뮬레이션 상태를 중앙 관리합니다.
+ * Lip-Safe AI - 중앙 상태 관리 Store (Supabase DB & LocalStorage 이중 동기화)
+ * 제작자 김영주 님의 소개 정보, 관리자 CMS 세션, 관련 작업물(프로젝트) CRUD를 관리합니다.
  * (모든 주석 한글 작성)
  */
 import { formatAccuracy, formatResponseTime } from './utils/formatters.js';
+import {
+  fetchProfileFromSupabase,
+  upsertProfileToSupabase,
+  fetchProjectsFromSupabase,
+  upsertProjectToSupabase,
+  deleteProjectFromSupabase,
+  fetchSkillsFromSupabase,
+  addSkillToSupabase,
+  deleteSkillFromSupabase,
+  fetchMetricsFromSupabase,
+  upsertMetricsToSupabase
+} from './utils/supabaseClient.js';
 
 const STORAGE_KEY = 'lip_safe_app_data';
 
@@ -75,6 +87,7 @@ class LipSafeStore {
     // 관리자 인증 및 화면 뷰 세션 상태
     this.isAdmin = false;
     this.camouflagedMode = false;
+    this.isSupabaseConnected = false;
 
     // 시뮬레이터 조명 상태 (Lux 단위)
     this.currentLux = 8;
@@ -91,8 +104,57 @@ class LipSafeStore {
     // 구독자 리스너 배열
     this.listeners = [];
 
-    // 로컬스토리지 데이터 복원 시도
+    // 1차: 로컬스토리지 복원
     this.loadFromLocalStorage();
+
+    // 2차: Supabase DB 비동기 데이터 동기화 시도
+    this.initFromSupabase();
+  }
+
+  /**
+   * Supabase 데이터베이스에서 실시간 데이터 로드
+   */
+  async initFromSupabase() {
+    try {
+      const [remoteProfile, remoteProjects, remoteSkills, remoteMetrics] = await Promise.all([
+        fetchProfileFromSupabase(),
+        fetchProjectsFromSupabase(),
+        fetchSkillsFromSupabase(),
+        fetchMetricsFromSupabase()
+      ]);
+
+      let updated = false;
+
+      if (remoteProfile) {
+        this.profile = { ...this.profile, ...remoteProfile };
+        updated = true;
+      }
+      if (remoteProjects && remoteProjects.length > 0) {
+        this.projects = remoteProjects;
+        updated = true;
+      }
+      if (remoteSkills && remoteSkills.length > 0) {
+        this.profile.skills = remoteSkills;
+        updated = true;
+      }
+      if (remoteMetrics) {
+        this.metrics = {
+          accuracy: parseFloat(remoteMetrics.accuracy) || this.metrics.accuracy,
+          responseTime: parseFloat(remoteMetrics.response_time) || this.metrics.responseTime,
+          drugTypesCount: parseInt(remoteMetrics.drug_types_count, 10) || this.metrics.drugTypesCount,
+          lowLightAccuracy: parseFloat(remoteMetrics.low_light_accuracy) || this.metrics.lowLightAccuracy
+        };
+        updated = true;
+      }
+
+      if (updated) {
+        this.isSupabaseConnected = true;
+        this.saveToLocalStorage();
+        this.notify();
+      }
+    } catch (e) {
+      console.warn('[Store] Supabase DB 연동 실패 (로컬 데이터 유지):', e);
+    }
   }
 
   /**
@@ -139,13 +201,19 @@ class LipSafeStore {
   }
 
   /**
-   * 초기 기본 데이터로 원복하고 로컬스토리지 데이터를 갱신합니다.
+   * 초기 기본 데이터로 원복하고 로컬스토리지 및 Supabase 데이터를 갱신합니다.
    */
   resetToDefaultData() {
     this.profile = JSON.parse(JSON.stringify(this.defaultProfile));
     this.metrics = JSON.parse(JSON.stringify(this.defaultMetrics));
     this.projects = JSON.parse(JSON.stringify(this.defaultProjects));
     this.saveToLocalStorage();
+    
+    // Supabase DB 비동기 업서트
+    upsertProfileToSupabase(this.profile);
+    upsertMetricsToSupabase(this.metrics);
+    this.projects.forEach(p => upsertProjectToSupabase(p));
+
     this.notify();
   }
 
@@ -187,49 +255,61 @@ class LipSafeStore {
   }
 
   /**
-   * 제작자 소개 프로필 정보 업데이트
+   * 제작자 소개 프로필 정보 업데이트 (Supabase + LocalStorage)
    */
-  updateProfile(updatedProfile) {
+  async updateProfile(updatedProfile) {
     this.profile = { ...this.profile, ...updatedProfile };
     this.saveToLocalStorage();
     this.notify();
+
+    // Supabase DB 동기화
+    await upsertProfileToSupabase(this.profile);
   }
 
   /**
-   * 실증 데이터 메트릭 수치 업데이트
+   * 실증 데이터 메트릭 수치 업데이트 (Supabase + LocalStorage)
    */
-  updateMetrics(updatedMetrics) {
+  async updateMetrics(updatedMetrics) {
     this.metrics = { ...this.metrics, ...updatedMetrics };
     this.saveToLocalStorage();
     this.notify();
+
+    // Supabase DB 동기화
+    await upsertMetricsToSupabase(this.metrics);
   }
 
   /**
-   * 보유 기술 스택 태그 추가
+   * 보유 기술 스택 태그 추가 (Supabase + LocalStorage)
    */
-  addSkill(name, category = 'General') {
+  async addSkill(name, category = 'General') {
     if (!name || this.profile.skills.some(s => s.name.toLowerCase() === name.toLowerCase())) {
       return false;
     }
     this.profile.skills.push({ name, category });
     this.saveToLocalStorage();
     this.notify();
+
+    // Supabase DB 동기화
+    await addSkillToSupabase(name, category);
     return true;
   }
 
   /**
-   * 보유 기술 스택 태그 삭제
+   * 보유 기술 스택 태그 삭제 (Supabase + LocalStorage)
    */
-  deleteSkill(name) {
+  async deleteSkill(name) {
     this.profile.skills = this.profile.skills.filter(s => s.name !== name);
     this.saveToLocalStorage();
     this.notify();
+
+    // Supabase DB 동기화
+    await deleteSkillFromSupabase(name);
   }
 
   /**
-   * 신규 서비스 작업물(프로젝트) 추가
+   * 신규 서비스 작업물(프로젝트) 추가 (Supabase + LocalStorage)
    */
-  addProject(projectData) {
+  async addProject(projectData) {
     const newProject = {
       id: 'work-' + Date.now(),
       title: projectData.title || '새 작업물',
@@ -243,13 +323,16 @@ class LipSafeStore {
     this.projects.unshift(newProject);
     this.saveToLocalStorage();
     this.notify();
+
+    // Supabase DB 동기화
+    await upsertProjectToSupabase(newProject);
     return newProject;
   }
 
   /**
-   * 기존 작업물(프로젝트) 수정
+   * 기존 작업물(프로젝트) 수정 (Supabase + LocalStorage)
    */
-  updateProject(id, updatedData) {
+  async updateProject(id, updatedData) {
     const index = this.projects.findIndex(p => p.id === id);
     if (index !== -1) {
       if (typeof updatedData.tags === 'string') {
@@ -258,18 +341,24 @@ class LipSafeStore {
       this.projects[index] = { ...this.projects[index], ...updatedData };
       this.saveToLocalStorage();
       this.notify();
+
+      // Supabase DB 동기화
+      await upsertProjectToSupabase(this.projects[index]);
       return true;
     }
     return false;
   }
 
   /**
-   * 작업물(프로젝트) 삭제
+   * 작업물(프로젝트) 삭제 (Supabase + LocalStorage)
    */
-  deleteProject(id) {
+  async deleteProject(id) {
     this.projects = this.projects.filter(p => p.id !== id);
     this.saveToLocalStorage();
     this.notify();
+
+    // Supabase DB 동기화
+    await deleteProjectFromSupabase(id);
   }
 
   /**

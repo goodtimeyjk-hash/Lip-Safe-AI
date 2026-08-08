@@ -102,10 +102,10 @@ export function renderAdminDashboard(container) {
       <!-- 하단 데이터 동기화 상태 바 -->
       <div style="margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-tertiary); flex-wrap: wrap; gap: 10px;">
         <div>
-          🟢 로컬스토리지 저장 키: <code style="color: var(--color-secondary);">lip_safe_app_data</code> (작업물 ${projects.length}개 / 기술 ${profile.skills.length}개)
+          ⚡ Supabase DB 연동 (<code style="color: var(--color-secondary);">tyvsnuyjilhvhfkcwmcm.supabase.co</code>) & LocalStorage 백업
         </div>
         <div>
-          실시간 동기화 상태: <span style="color: #10b981; font-weight: 700;">정상 구동 중</span>
+          실시간 DB 동기화: <span style="color: #10b981; font-weight: 700;">🟢 Supabase DB 연결됨 (작업물 ${projects.length}개)</span>
         </div>
       </div>
     `;

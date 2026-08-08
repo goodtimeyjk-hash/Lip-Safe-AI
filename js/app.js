@@ -42,9 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const tableElem = document.getElementById('comparison-table-container');
   if (tableElem) renderComparisonTable(tableElem);
 
+
   // 7. 하단 문의 푸터 마운트
   const footerElem = document.getElementById('contact-footer-container');
   if (footerElem) renderContactFooter(footerElem);
+
 
   // 8. 🚨 112 긴급 신고 모달 & ⚙️ 관리자 CMS 라이브 편집 모달 마운트
   const emergencyModalElem = document.getElementById('emergency-modal-container');
@@ -52,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const adminModalElem = document.getElementById('admin-modal-container');
   if (adminModalElem) renderAdminEditModal(adminModalElem);
+
 
   // 9. 환영 토스트 알림 노출
   showToast('👋 김영주 님의 Lip-Safe AI 포트폴리오에 오신 것을 환영합니다!', 'info', 3500);

@@ -5,6 +5,7 @@
  */
 import { formatAccuracy, formatResponseTime } from './utils/formatters.js';
 
+
 class PortfolioStore {
   constructor() {
     // 1. 김영주 님 프로필 및 자기소개 기본 데이터
@@ -30,9 +31,11 @@ class PortfolioStore {
       github: 'https://github.com/youngju-kim'
     };
 
+
     // 2. 관리자 인증 및 CMS 편집 세션 상태 (Supabase Auth 연동)
     this.isAdmin = false;
     this.camouflagedMode = false; // 위장 UI 모드 토글 (일반 뷰티 앱으로 화면 전환)
+
 
     // 3. Lip-Safe AI 엣지AI 판독 및 센싱 실증 데이터
     this.metrics = {
@@ -42,6 +45,7 @@ class PortfolioStore {
       lowLightAccuracy: 98.5  // 어두운 조명 (10 lux 이하) 환경 판독 성공률
     };
 
+
     // 4. 5종 마약 동시 감지 변색 센서 반응 상태
     this.chemicalSensors = [
       { id: 'ghb', name: 'GHB (물뽕)', color: '#8B5CF6', status: '음성 (안전)', desc: '보라색 무반응' },
@@ -50,6 +54,7 @@ class PortfolioStore {
       { id: 'cocaine', name: '코카인 (Cocaine)', color: '#F59E0B', status: '음성 (안전)', desc: '황색 무반응' },
       { id: 'mdma', name: 'MDMA (엑스터시)', color: '#10B981', status: '음성 (안전)', desc: '에메랄드 무반응' }
     ];
+
 
     // 5. 시뮬레이터 조명 상태 (Lux 단위)
     this.currentLux = 8; // 8 lux (클럽/음영 환경)

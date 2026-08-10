@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lip-Safe AI - 기본 글로벌 스타일 및 레이아웃 시스템
+   Lip-Safe AI - 기본 글로벌 스타일 및 모바일 프레임 레이아웃
    ========================================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -8,117 +8,136 @@
 }
 
 body {
-  font-family: var(--font-family-sans);
-  background-color: var(--bg-app);
+  font-family: var(--font-sans);
+  background-color: var(--bg-app-dark);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   overflow-x: hidden;
+  padding: 20px 10px;
 }
 
-/* Lip-Safe AI 은은한 앰비언트 배경 글로우 원 */
+/* 은은한 백그라운드 앰비언트 글로우 */
 body::before {
   content: '';
   position: fixed;
-  top: -120px;
-  left: 15%;
-  width: 550px;
-  height: 550px;
-  background: radial-gradient(circle, rgba(225, 29, 72, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
-  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(255, 42, 109, 0.08) 40%, rgba(10, 10, 12, 0) 70%);
   pointer-events: none;
+  z-index: 0;
 }
 
-body::after {
-  content: '';
-  position: fixed;
-  bottom: -120px;
-  right: 15%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(15, 23, 42, 0) 70%);
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* 메인 앱 레이아웃 감싸기 */
-.app-container {
+/* 모바일 디바이스 프레임 (이미지의 럭셔리 디바이스 형태 100% 재현) */
+.mobile-device-shell {
+  position: relative;
+  width: 100%;
+  max-width: 412px;
+  height: 840px;
+  background: var(--bg-phone-body);
+  border: 4px solid var(--gold-dark);
+  box-shadow: 0 0 0 2px var(--gold-primary), 0 25px 60px rgba(0, 0, 0, 0.9), var(--gold-glow);
+  border-radius: 48px;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  width: 100%;
+  overflow: hidden;
+  z-index: 10;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
-/* 본문 컨텐츠 메인 영역 */
-.app-main {
+/* 5600K 스튜디오 조명 활성화 시 링라이트 글로우 오버레이 효과 */
+.mobile-device-shell.studio-light-active {
+  box-shadow: var(--studio-light-glow), 0 0 0 4px #FFF8E7;
+  border-color: #FFF8E7;
+}
+
+.mobile-device-shell.studio-light-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 44px;
+  border: 3px solid rgba(255, 248, 231, 0.85);
+  box-shadow: inset 0 0 25px rgba(255, 248, 231, 0.4);
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* 상단 스테이터스 바 (23:14, Wi-Fi, 배터리, 다이나믹 섬 노치) */
+.status-bar {
+  height: 48px;
+  padding: 12px 24px 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-gold);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  user-select: none;
+  z-index: 50;
+}
+
+.status-time {
+  letter-spacing: -0.03em;
+}
+
+.status-notch {
+  width: 90px;
+  height: 18px;
+  background: #000000;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.status-notch-camera {
+  width: 7px;
+  height: 7px;
+  background: #F59E0B;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #F59E0B;
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+}
+
+/* 폰 메인 뷰포트 컨테이너 */
+.app-viewport {
   flex: 1;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding-bottom: 80px;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.content-body {
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+.app-viewport::-webkit-scrollbar {
+  display: none;
 }
 
-/* 서리 유리 (Glassmorphic Card) 공통 컴포넌트 규격 */
-.glass-card {
-  background: var(--bg-surface-glass);
-  backdrop-filter: var(--backdrop-blur);
-  -webkit-backdrop-filter: var(--backdrop-blur);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 28px;
-  box-shadow: var(--shadow-md);
-  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.glass-card:hover {
-  border-color: var(--border-strong);
-}
-
-/* 타이포그래피 스타일링 */
+/* 텍스트 & 유틸리티 */
 h1, h2, h3, h4 {
   color: var(--text-primary);
   font-weight: 800;
-  letter-spacing: -0.02em;
 }
 
-code {
-  font-family: var(--font-family-mono);
-  background: rgba(15, 23, 42, 0.8);
-  color: var(--color-secondary);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.85em;
-  border: 1px solid rgba(6, 182, 212, 0.3);
-}
-
-/* 스크롤바 맞춤 스타일링 */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-app);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--bg-surface-elevated);
-  border-radius: var(--radius-pill);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
+button {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }

@@ -3,68 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lip-Safe AI | 3D Gold & Ruby Lipstick AI 판독기</title>
-  <meta name="description" content="특수 립스틱 시약과 온디바이스 AI 카메라 기술로 1초 만에 마약성 물질(GHB/물뽕) 변색 판독 및 비상 SOS 긴급 대응 지원" />
-  
+  <title>Lip-Safe AI | 3D 루비 레드 립스틱 AI 판독기 라이브 테스트</title>
+  <meta name="description" content="3D 루비 레드 & 골드 립스틱 1초 AI 판독 및 5600K 스튜디오 조도 보정 라이브 테스트" />
+
   <!-- Pretendard 및 JetBrains Mono 폰트 연결 -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+
   <style>
-    /* ==========================================================================
-       Lip-Safe AI - 디자인 토큰 & 스타일시트 (Standalone Inline)
-       ========================================================================== */
-    :root {
-      --gold-primary: #D4AF37;
-      --gold-light: #FFF099;
-      --gold-mid: #F59E0B;
-      --gold-dark: #8B6508;
-      --gold-metallic-grad: linear-gradient(135deg, #FFF099 0%, #D4AF37 40%, #B8860B 75%, #F59E0B 100%);
-      --gold-casing-grad: linear-gradient(90deg, #8B6508 0%, #F59E0B 15%, #FFF099 45%, #D4AF37 70%, #6B4E03 100%);
-      --gold-glow: 0 0 35px rgba(212, 175, 55, 0.45);
-      --reagent-pink: #FF2A6D;
-      --reagent-purple: #7B2CBF;
-      --reagent-safe-green: #10B981;
-      --color-danger: #EF4444;
-      --color-danger-bg: rgba(239, 68, 68, 0.18);
-      --color-warning: #F59E0B;
-      --color-warning-bg: rgba(245, 158, 11, 0.18);
-      --color-success: #10B981;
-      --color-success-bg: rgba(16, 185, 129, 0.18);
-      --studio-light-glow: 0 0 60px 20px rgba(255, 248, 231, 0.7);
-      --bg-app-dark: #0A0A0C;
-      --bg-phone-body: #0E0F12;
-      --bg-surface-card: rgba(26, 27, 34, 0.85);
-      --bg-surface-glass: rgba(22, 23, 30, 0.85);
-      --border-subtle: rgba(255, 255, 255, 0.1);
-      --border-gold: rgba(212, 175, 55, 0.35);
-      --text-primary: #FFFFFF;
-      --text-secondary: #A1A1AA;
-      --text-gold: #FCD34D;
-      --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    /* 캡처 이미지와 100% 동일한 좌우 사이드-바이-사이드 레이아웃 */
     body {
-      font-family: var(--font-sans);
-      background-color: var(--bg-app-dark);
-      color: var(--text-primary);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+      background: #0A0A0C;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow-x: hidden;
       padding: 24px 16px;
+      margin: 0;
     }
 
-    /* 캡처 이미지와 100% 동일한 좌우 사이드-바이-사이드 레이아웃 */
     .demo-main-layout {
       display: flex;
       flex-direction: row;
@@ -76,7 +39,7 @@
       flex-wrap: wrap;
     }
 
-    /* 좌측 원터치 컨트롤 패널 */
+    /* 좌측 원터치 컨트롤 패널 (유저 캡처 이미지 패널 디자인 100% 재현) */
     .test-guide-banner {
       background: rgba(22, 23, 30, 0.85);
       border: 1px solid var(--border-gold);
@@ -115,353 +78,11 @@
       gap: 6px;
       width: fit-content;
     }
-
-    .test-btn-item:hover { transform: scale(1.04); }
-
-    /* 모바일 디바이스 프레임 */
-    .mobile-device-shell {
-      position: relative;
-      width: 100%;
-      max-width: 412px;
-      height: 840px;
-      background: var(--bg-phone-body);
-      border: 4px solid var(--gold-dark);
-      box-shadow: 0 0 0 2px var(--gold-primary), 0 25px 60px rgba(0, 0, 0, 0.9), var(--gold-glow);
-      border-radius: 48px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 10;
-      transition: box-shadow 0.4s ease, border-color 0.4s ease;
-    }
-
-    .mobile-device-shell.studio-light-active {
-      box-shadow: var(--studio-light-glow), 0 0 0 4px #FFF8E7;
-      border-color: #FFF8E7;
-    }
-
-    /* 상단 스테이터스 바 */
-    .status-bar {
-      height: 48px;
-      padding: 12px 24px 0 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--text-gold);
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 700;
-      user-select: none;
-      z-index: 50;
-    }
-
-    .status-notch {
-      width: 90px;
-      height: 18px;
-      background: #000000;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .status-notch-camera {
-      width: 7px;
-      height: 7px;
-      background: #F59E0B;
-      border-radius: 50%;
-      box-shadow: 0 0 6px #F59E0B;
-    }
-
-    .status-icons { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; }
-
-    /* 메인 뷰포트 */
-    .app-viewport {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-
-    /* 3D 립스틱 스테이지 */
-    .lipstick-scanner-stage {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      min-height: 560px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at center, rgba(225, 29, 72, 0.22) 0%, rgba(212, 175, 55, 0.12) 35%, rgba(14, 15, 18, 0.98) 75%, #0A0A0C 100%);
-      padding: 20px;
-      overflow: hidden;
-      user-select: none;
-    }
-
-    /* 립스틱 조준 원형 아우라 링 */
-    .lipstick-aura-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -55%);
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      border: 1px solid rgba(6, 182, 212, 0.3);
-      box-shadow: 0 0 20px rgba(6, 182, 212, 0.12);
-      pointer-events: none;
-    }
-
-    /* 상단 미니멀 퀵 아이콘 */
-    .stage-top-actions {
-      position: absolute;
-      top: 14px;
-      left: 20px;
-      right: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 90;
-    }
-
-    .top-action-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(22, 23, 30, 0.75);
-      border: 1px solid var(--border-gold);
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-      transition: transform 0.2s ease;
-      cursor: pointer;
-    }
-
-    .top-action-btn:hover { transform: scale(1.1); }
-    .top-action-btn.active { border-color: #FFF8E7; box-shadow: var(--studio-light-glow); background: rgba(255, 248, 231, 0.2); }
-
-    /* 3D 립스틱 오브제 */
-    .lipstick-3d-wrapper {
-      position: relative;
-      width: 140px;
-      height: 290px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      transition: transform 0.3s var(--transition-smooth);
-      z-index: 10;
-    }
-
-    .lipstick-3d-wrapper:hover { transform: scale(1.05) translateY(-6px); filter: drop-shadow(0 0 30px rgba(225, 29, 72, 0.7)); }
-    .lipstick-3d-wrapper:active { transform: scale(0.96); }
-
-    .lipstick-bullet-tip {
-      position: relative;
-      width: 54px;
-      height: 78px;
-      background: linear-gradient(135deg, #FF4D79 0%, #E11D48 45%, #9F072B 100%);
-      border-radius: 27px 27px 4px 4px;
-      clip-path: polygon(0% 25%, 100% 0%, 100% 100%, 0% 100%);
-      box-shadow: inset 4px -4px 12px rgba(0, 0, 0, 0.4), inset -2px 2px 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(225, 29, 72, 0.5);
-      transition: background 0.8s ease, box-shadow 0.8s ease;
-    }
-
-    .lipstick-bullet-tip.color-changed {
-      background: linear-gradient(135deg, #C084FC 0%, var(--reagent-purple) 50%, #3B0764 100%);
-      box-shadow: inset 4px -4px 12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.85);
-    }
-
-    .lipstick-inner-tube {
-      width: 60px;
-      height: 42px;
-      background: linear-gradient(90deg, #8B6508 0%, #D4AF37 30%, #FFF099 60%, #B8860B 100%);
-      border-radius: 4px 4px 0 0;
-      border-bottom: 2px solid #573E02;
-    }
-
-    .lipstick-gold-body {
-      position: relative;
-      width: 108px;
-      height: 150px;
-      background: var(--gold-casing-grad);
-      border-radius: 8px 8px 14px 14px;
-      box-shadow: inset -4px 0 8px rgba(0, 0, 0, 0.5), inset 4px 0 8px rgba(255, 255, 255, 0.6), 0 18px 35px rgba(0, 0, 0, 0.8);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .lipstick-gold-body::before {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0; left: 34px; width: 14px;
-      background: rgba(255, 255, 255, 0.4);
-      filter: blur(2px);
-    }
-
-    .lipstick-brand-label {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      font-weight: 900;
-      color: #3D2B03;
-      letter-spacing: 0.18em;
-      writing-mode: vertical-rl;
-      text-transform: uppercase;
-    }
-
-    .lipstick-shadow {
-      position: absolute;
-      bottom: 8px; width: 135px; height: 20px;
-      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 70%);
-      border-radius: 50%;
-    }
-
-    /* 1초 AI 스캔 레이저 & 프로그레스 링 */
-    .scan-laser-line {
-      position: absolute;
-      top: 15%; left: 10%; right: 10%; height: 3px;
-      background: linear-gradient(90deg, transparent, #007AFF, #FFF099, #FF2A6D, transparent);
-      box-shadow: 0 0 15px #007AFF, 0 0 25px #FF2A6D;
-      opacity: 0; pointer-events: none;
-    }
-
-    .lipstick-3d-wrapper.is-scanning .scan-laser-line {
-      opacity: 1;
-      animation: scan-move 1.2s infinite ease-in-out alternate;
-    }
-
-    @keyframes scan-move { 0% { top: 15%; } 100% { top: 40%; } }
-
-    .scan-progress-ring {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -60%);
-      width: 220px; height: 220px;
-      border-radius: 50%;
-      border: 2px solid rgba(0, 122, 255, 0.2);
-      pointer-events: none; z-index: 20;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .scan-progress-ring.active {
-      border-color: rgba(0, 122, 255, 0.8);
-      box-shadow: 0 0 30px rgba(0, 122, 255, 0.4);
-      animation: pulse-ring 1s infinite alternate;
-    }
-
-    @keyframes pulse-ring {
-      0% { transform: translate(-50%, -60%) scale(0.98); }
-      100% { transform: translate(-50%, -60%) scale(1.05); }
-    }
-
-    /* 성분 분석 팝업 오버레이 */
-    .analysis-popup-container {
-      position: absolute; top: 40px; left: 20px; right: 20px;
-      background: var(--bg-surface-glass);
-      border: 1.5px solid var(--border-gold);
-      border-radius: 22px;
-      padding: 18px 20px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85), var(--gold-glow);
-      backdrop-filter: blur(16px);
-      z-index: 80;
-      animation: popup-slide-down 0.4s var(--transition-smooth);
-    }
-
-    @keyframes popup-slide-down {
-      from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .analysis-popup-container.status-danger { border-color: var(--color-danger); box-shadow: 0 0 35px rgba(239, 68, 68, 0.5); }
-    .analysis-popup-container.status-warning { border-color: var(--color-warning); box-shadow: 0 0 35px rgba(245, 158, 11, 0.5); }
-    .analysis-popup-container.status-safe { border-color: var(--color-success); box-shadow: 0 0 35px rgba(16, 185, 129, 0.5); }
-
-    .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .popup-status-pill { display: flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 800; }
-    .status-danger .popup-status-pill { background: var(--color-danger-bg); color: var(--color-danger); }
-    .status-warning .popup-status-pill { background: var(--color-warning-bg); color: var(--color-warning); }
-    .status-safe .popup-status-pill { background: var(--color-success-bg); color: var(--color-success); }
-
-    .popup-close-btn {
-      background: rgba(255, 255, 255, 0.1); color: var(--text-secondary);
-      width: 26px; height: 26px; border-radius: 50%; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .color-comparison-row {
-      display: flex; align-items: center; justify-content: space-around;
-      background: rgba(0, 0, 0, 0.4); border-radius: 14px; padding: 10px; margin: 10px 0;
-    }
-
-    .color-dot-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.72rem; color: var(--text-secondary); }
-    .color-dot { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, 0.3); }
-
-    .popup-action-btn {
-      width: 100%; margin-top: 10px; padding: 10px; border-radius: 12px;
-      font-weight: 800; font-size: 0.85rem; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
-
-    .btn-danger-emergency {
-      background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-      color: #FFFFFF; font-weight: 800; box-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
-    }
-
-    /* 하단 내비게이션 바 */
-    .bottom-nav-bar {
-      height: 72px;
-      background: rgba(12, 13, 16, 0.95);
-      border-top: 1px solid var(--border-gold);
-      display: flex; justify-content: space-around; align-items: center;
-      padding: 0 10px 10px 10px; z-index: 60;
-    }
-
-    .nav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      background: transparent; border: none; color: var(--text-secondary);
-      font-size: 0.68rem; font-weight: 700; cursor: pointer; width: 68px;
-    }
-
-    .nav-item.active { color: var(--text-gold); }
-    .nav-icon { font-size: 1.15rem; }
-
-    .nav-item-sos-center { position: relative; top: -14px; }
-    .sos-circle-trigger {
-      width: 52px; height: 52px;
-      background: radial-gradient(circle at 35% 35%, #FF6565 0%, #DC2626 60%, #7F1D1D 100%);
-      border: 2px solid #FF8080; border-radius: 50%; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      box-shadow: 0 0 22px rgba(239, 68, 68, 0.8); color: #FFF;
-    }
-
-    .sos-label-text { font-size: 0.65rem; font-weight: 900; color: #FFF; }
-
-    /* 서브뷰 & 모달 */
-    .modal-full-overlay {
-      position: absolute; inset: 0; background: rgba(10, 10, 12, 0.92);
-      backdrop-filter: blur(14px); z-index: 150; display: flex; flex-direction: column; padding: 24px 20px; overflow-y: auto;
-    }
-    .modal-card { background: rgba(22, 23, 30, 0.95); border: 1px solid var(--border-gold); border-radius: 24px; padding: 22px; }
-    .store-item-card { background: rgba(30, 31, 40, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .history-log-card { background: rgba(22, 23, 30, 0.8); border-left: 4px solid var(--log-color, var(--gold-primary)); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
-    .btn-sm { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; font-weight: 700; cursor: pointer; border: 1px solid transparent; }
-    .btn-primary { background: linear-gradient(135deg, #E11D48, #BE123C); color: #FFF; }
-    .btn-outline { background: transparent; color: #FFF; border-color: rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
 
-  <!-- 메인 100% 동일한 좌우 사이드-바이-사이드 레이아웃 -->
+  <!-- 메인 레이아웃 감싸기 (좌측 패널 + 우측 핸드폰) -->
   <div class="demo-main-layout">
     
     <!-- 1.0 좌측 원터치 컨트롤 패널 -->
@@ -475,13 +96,13 @@
       </div>
       
       <div class="test-btn-group">
-        <button class="test-btn-item" style="background: rgba(239, 68, 68, 0.2); border-color: #EF4444; color: #FFF;" onclick="startScan('danger')">
+        <button class="test-btn-item" style="background: rgba(239, 68, 68, 0.2); border-color: #EF4444; color: #FFF;" onclick="triggerTest('danger')">
           🔴 GHB 마약 검출 테스트
         </button>
-        <button class="test-btn-item" style="background: rgba(245, 158, 11, 0.15); border-color: #F59E0B; color: #FCD34D;" onclick="startScan('warning')">
+        <button class="test-btn-item" style="background: rgba(245, 158, 11, 0.15); border-color: #F59E0B; color: #FCD34D;" onclick="triggerTest('warning')">
           🟡 조도 주의 테스트
         </button>
-        <button class="test-btn-item" style="background: rgba(16, 185, 129, 0.2); border-color: #10B981; color: #A7F3D0;" onclick="startScan('safe')">
+        <button class="test-btn-item" style="background: rgba(16, 185, 129, 0.2); border-color: #10B981; color: #A7F3D0;" onclick="triggerTest('safe')">
           🟢 정상 안심 음용 테스트
         </button>
       </div>
@@ -497,14 +118,14 @@
         <div class="status-icons"><span>📶</span><span>🛜</span><span style="color: #34C759;">🔋</span></div>
       </div>
 
-      <!-- 메인 뷰포트 영역 -->
+      <!-- 메인 뷰포트 -->
       <div class="app-viewport" id="app-viewport">
         
-        <!-- 립스틱 AI 판독 스테이지 -->
+        <!-- 립스틱 스캐너 메인 스테이지 -->
         <div id="scanner-view-wrapper">
           <div class="lipstick-scanner-stage" id="standalone-scanner-stage">
             
-            <!-- 상단 퀵 아이콘 컨트롤러 -->
+            <!-- 상단 퀵 컨트롤러 바 -->
             <div class="stage-top-actions">
               <button class="top-action-btn" id="top-demo-preset-btn" title="⚙️ 데모 설정" onclick="toggleDemoMenu()">⚙️</button>
               <button class="top-action-btn" id="top-light-toggle-btn" title="💡 5600K 조도 보정" onclick="toggleLight()">💡</button>
@@ -535,11 +156,11 @@
             </div>
           </div>
 
-          <!-- 성분 분석 팝업 오버레이 컨테이너 -->
+          <!-- 성분 분석 팝업 컨테이너 -->
           <div id="analysis-popup-container"></div>
         </div>
 
-        <!-- 서브 뷰 컨테이너 (스토어 & 기록) -->
+        <!-- 서브 뷰 (스토어 & 기록) -->
         <div id="subview-container"></div>
       </div>
 
@@ -566,7 +187,7 @@
     </div>
   </div>
 
-  <!-- Standalone Interactive Engine Script (100% CORS-Free Double-Click Ready) -->
+  <!-- Standalone Interactive Engine Script -->
   <script>
     let isScanning = false;
     let isStudioLightOn = false;
@@ -631,6 +252,10 @@
       if (choice === '1') startScan('danger');
       else if (choice === '2') startScan('warning');
       else if (choice === '3') startScan('safe');
+    }
+
+    function triggerTest(mode) {
+      startScan(mode);
     }
 
     function startScan(mode = 'random') {
@@ -800,7 +425,7 @@
         document.getElementById('nav-store').classList.add('active');
         scannerView.style.display = 'none';
         subview.innerHTML = `
-          <div class="subview-container" style="padding: 20px;">
+          <div class="subview-container">
             <div class="modal-card">
               <h3 style="font-size: 1.15rem; color: var(--text-gold); margin-bottom: 12px;">🔮 교체용 시약 립스틱 스토어</h3>
               <div class="store-item-card">
@@ -824,7 +449,7 @@
         document.getElementById('nav-history').classList.add('active');
         scannerView.style.display = 'none';
         subview.innerHTML = `
-          <div class="subview-container" style="padding: 20px;">
+          <div class="subview-container">
             <div class="modal-card">
               <h3 style="font-size: 1.15rem; color: var(--text-gold); margin-bottom: 12px;">🕒 1초 AI 스캔 이력 장부</h3>
               ${scanHistory.map(h => `

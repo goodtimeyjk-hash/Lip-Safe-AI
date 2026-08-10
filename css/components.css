@@ -1,299 +1,590 @@
 /* ==========================================================================
-   Lip-Safe AI - UI 컴포넌트 전용 스타일시트
-   (버튼 LG/MD/SM, 모달, 5종 변색 색상 칩, 차별점 비교표, 비상 신고 애니메이션)
+   Lip-Safe AI - 3D 골드 립스틱 & 스마트 UI 컴포넌트 스타일시트
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. 헤더 네비게이션 & 관리자 로그인 버튼
+   1. 메인 3D 루비 레드 & 골드 립스틱 뷰포트 스테이지 (Central 3D Lipstick Stage)
    -------------------------------------------------------------------------- */
-.header-bar {
+.lipstick-scanner-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(225, 29, 72, 0.22) 0%, rgba(212, 175, 55, 0.12) 35%, rgba(14, 15, 18, 0.98) 75%, #0A0A0C 100%);
+  padding: 20px;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* 립스틱 조준 원형 아우라 링 (Circular Target Aura Ring) */
+.lipstick-aura-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.12);
+  pointer-events: none;
+}
+
+/* 상단 미니멀 퀵 컨트롤러 바 (좌측: 데모 설정, 우측: 조도 보정) */
+.stage-top-actions {
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  right: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 36px;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: var(--backdrop-blur);
-  border-bottom: 1px solid var(--border-subtle);
-  position: sticky;
-  top: 0;
-  z-index: 500;
-  gap: 16px;
-  flex-wrap: wrap;
+  z-index: 90;
 }
 
-.header-logo {
+.top-action-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(22, 23, 30, 0.75);
+  border: 1px solid var(--border-gold);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 12px;
-  text-decoration: none;
+  justify-content: center;
+  font-size: 1.1rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  cursor: pointer;
 }
 
-.header-logo-icon {
+.top-action-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--gold-primary);
+  background: rgba(30, 32, 42, 0.9);
+}
+
+.top-action-btn.active {
+  border-color: #FFF8E7;
+  box-shadow: var(--studio-light-glow);
+  background: rgba(255, 248, 231, 0.2);
+}
+
+/* 3D 루비 레드 & 골드 립스틱 오브제 감싸기 */
+.lipstick-3d-wrapper {
+  position: relative;
+  width: 140px;
+  height: 290px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s var(--transition-smooth), filter 0.3s ease;
+  z-index: 10;
+}
+
+.lipstick-3d-wrapper:hover {
+  transform: scale(1.05) translateY(-6px);
+  filter: drop-shadow(0 0 30px rgba(225, 29, 72, 0.7));
+}
+
+.lipstick-3d-wrapper:active {
+  transform: scale(0.96);
+}
+
+/* 립스틱 상단 루비 레드 시약 팁 (Slanted Ruby Red Reagent Bullet Tip) */
+.lipstick-bullet-tip {
+  position: relative;
+  width: 54px;
+  height: 78px;
+  background: linear-gradient(135deg, #FF4D79 0%, #E11D48 45%, #9F072B 100%);
+  border-radius: 27px 27px 4px 4px;
+  clip-path: polygon(0% 25%, 100% 0%, 100% 100%, 0% 100%);
+  box-shadow: inset 4px -4px 12px rgba(0, 0, 0, 0.4), inset -2px 2px 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(225, 29, 72, 0.5);
+  transition: background 0.8s ease, box-shadow 0.8s ease, transform 0.5s ease;
+}
+
+/* GHB/물뽕 변색 반응 시 자색/보라색으로 변색 */
+.lipstick-bullet-tip.color-changed {
+  background: linear-gradient(135deg, #C084FC 0%, var(--reagent-purple) 50%, #3B0764 100%);
+  box-shadow: inset 4px -4px 12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.85);
+}
+
+/* 립스틱 골드 메탈 이너 튜브 */
+.lipstick-inner-tube {
+  width: 60px;
+  height: 42px;
+  background: linear-gradient(90deg, #8B6508 0%, #D4AF37 30%, #FFF099 60%, #B8860B 100%);
+  border-radius: 4px 4px 0 0;
+  border-bottom: 2px solid #573E02;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+/* 립스틱 3D 골드 스퀘어 메인 바디 케이싱 */
+.lipstick-gold-body {
+  position: relative;
+  width: 108px;
+  height: 150px;
+  background: var(--gold-casing-grad);
+  border-radius: 8px 8px 14px 14px;
+  box-shadow: inset -4px 0 8px rgba(0, 0, 0, 0.5), inset 4px 0 8px rgba(255, 255, 255, 0.6), 0 18px 35px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 케이싱 반사 빛 하이라이트 세로선 */
+.lipstick-gold-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 34px;
+  width: 14px;
+  background: rgba(255, 255, 255, 0.4);
+  filter: blur(2px);
+}
+
+.lipstick-brand-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #3D2B03;
+  letter-spacing: 0.18em;
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+/* 립스틱 바닥 3D 그림자 */
+.lipstick-shadow {
+  position: absolute;
+  bottom: 8px;
+  width: 135px;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   2. 1초 AI 스캔 애니메이션 & 레이저 스펙트럼
+   -------------------------------------------------------------------------- */
+.scan-laser-line {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #007AFF, #FFF099, #FF2A6D, transparent);
+  box-shadow: 0 0 15px #007AFF, 0 0 25px #FF2A6D;
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lipstick-3d-wrapper.is-scanning .scan-laser-line {
+  opacity: 1;
+  animation: scan-move 1.2s infinite ease-in-out alternate;
+}
+
+@keyframes scan-move {
+  0% { top: 15%; }
+  100% { top: 40%; }
+}
+
+.scan-progress-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 122, 255, 0.2);
+  pointer-events: none;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scan-progress-ring.active {
+  border-color: rgba(0, 122, 255, 0.8);
+  box-shadow: 0 0 30px rgba(0, 122, 255, 0.4);
+  animation: pulse-ring 1s infinite alternate;
+}
+
+@keyframes pulse-ring {
+  0% { transform: translate(-50%, -60%) scale(0.98); }
+  100% { transform: translate(-50%, -60%) scale(1.05); }
+}
+
+.scan-status-badge {
+  position: absolute;
+  bottom: 120px;
+  background: rgba(14, 15, 18, 0.85);
+  border: 1px solid var(--gold-primary);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+  z-index: 30;
+}
+
+/* --------------------------------------------------------------------------
+   3. 립스틱 화면 위 '성분 분석 팝업' (Overlay Analysis Result Popup)
+   -------------------------------------------------------------------------- */
+.analysis-popup-container {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  right: 20px;
+  background: var(--bg-surface-glass);
+  border: 1.5px solid var(--border-gold);
+  border-radius: 22px;
+  padding: 18px 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85), var(--gold-glow);
+  backdrop-filter: blur(16px);
+  z-index: 80;
+  animation: popup-slide-down 0.4s var(--transition-smooth);
+}
+
+@keyframes popup-slide-down {
+  from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 상태별 테마 보더 */
+.analysis-popup-container.status-danger {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 35px rgba(239, 68, 68, 0.5);
+}
+
+.analysis-popup-container.status-warning {
+  border-color: var(--color-warning);
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.5);
+}
+
+.analysis-popup-container.status-safe {
+  border-color: var(--color-success);
+  box-shadow: 0 0 35px rgba(16, 185, 129, 0.5);
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.popup-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.status-danger .popup-status-pill {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.status-warning .popup-status-pill {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.status-safe .popup-status-pill {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.popup-close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.popup-close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFF;
+}
+
+.color-comparison-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 14px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.color-dot-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.color-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px currentColor;
+}
+
+.arrow-icon {
+  color: var(--text-gold);
+  font-size: 1.1rem;
+}
+
+.popup-action-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   4. 무지개 색상 동그라미 버튼 (7가지 스마트 컨트롤러)
+   -------------------------------------------------------------------------- */
+.rainbow-controller-container {
+  width: 100%;
+  padding: 12px 16px 20px 16px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  z-index: 40;
+}
+
+.rainbow-circle-btn {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  border-radius: var(--radius-md);
+  border-radius: 50%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  box-shadow: var(--shadow-neon-rose);
-}
-
-.header-title-text {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* --------------------------------------------------------------------------
-   2. 버튼 시스템 (LG 48px / MD 40px / SM 32px)
-   -------------------------------------------------------------------------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-weight: 600;
-  border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: var(--btn-glow, 0 0 12px rgba(255, 255, 255, 0.2));
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  user-select: none;
-  text-decoration: none;
-  white-space: nowrap;
 }
 
-/* 규격별 사이즈 */
-.btn-lg {
-  height: 48px;
-  padding: 14px 28px;
-  font-size: 1rem;
-  border-radius: var(--radius-md);
+.rainbow-circle-btn:hover {
+  transform: scale(1.18) translateY(-3px);
+  box-shadow: var(--btn-glow-strong, 0 0 22px currentColor);
 }
 
-.btn-md {
-  height: 40px;
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  border-radius: 10px;
+.rainbow-circle-btn:active {
+  transform: scale(0.92);
 }
 
-.btn-sm {
-  height: 32px;
-  padding: 6px 12px;
-  font-size: 0.8rem;
-  border-radius: var(--radius-sm);
+/* 7가지 개별 컬러 스펙트럼 디테일 */
+.rainbow-circle-btn.btn-red {
+  background: radial-gradient(circle at 35% 35%, #FF7B73 0%, var(--rainbow-red) 60%, #990000 100%);
+  --btn-glow: var(--rainbow-red-glow);
+  --btn-glow-strong: 0 0 25px rgba(255, 59, 48, 0.9);
 }
 
-/* 스타일 배리에이션 */
-.btn-primary {
-  background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
-  color: #FFFFFF;
-  box-shadow: 0 4px 14px var(--color-primary-glow);
+.rainbow-circle-btn.btn-orange {
+  background: radial-gradient(circle at 35% 35%, #FFC066 0%, var(--rainbow-orange) 60%, #995900 100%);
+  --btn-glow: var(--rainbow-orange-glow);
+  --btn-glow-strong: 0 0 25px rgba(255, 149, 0, 0.9);
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-neon-rose);
+.rainbow-circle-btn.btn-yellow {
+  background: radial-gradient(circle at 35% 35%, #FFF099 0%, var(--rainbow-yellow) 60%, #997A00 100%);
+  --btn-glow: var(--rainbow-yellow-glow);
+  --btn-glow-strong: 0 0 25px rgba(255, 204, 0, 0.9);
 }
 
-.btn-secondary {
-  background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
-  color: #FFFFFF;
-  box-shadow: 0 4px 14px var(--color-secondary-glow);
+.rainbow-circle-btn.btn-green {
+  background: radial-gradient(circle at 35% 35%, #76EC96 0%, var(--rainbow-green) 60%, #157A30 100%);
+  --btn-glow: var(--rainbow-green-glow);
+  --btn-glow-strong: 0 0 25px rgba(52, 199, 89, 0.9);
 }
 
-.btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-neon-cyan);
+.rainbow-circle-btn.btn-blue {
+  background: radial-gradient(circle at 35% 35%, #66B2FF 0%, var(--rainbow-blue) 60%, #004080 100%);
+  --btn-glow: var(--rainbow-blue-glow);
+  --btn-glow-strong: 0 0 25px rgba(0, 122, 255, 0.9);
 }
 
-.btn-outline {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border-strong);
+.rainbow-circle-btn.btn-indigo {
+  background: radial-gradient(circle at 35% 35%, #9D9BF0 0%, var(--rainbow-indigo) 60%, #2A2880 100%);
+  --btn-glow: var(--rainbow-indigo-glow);
+  --btn-glow-strong: 0 0 25px rgba(88, 86, 214, 0.9);
 }
 
-.btn-outline:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--color-primary);
-}
-
-/* 🚨 112 원터치 긴급 신고 비상 버튼 */
-.btn-danger-emergency {
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-  color: #FFFFFF;
-  font-weight: 800;
-  box-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
-  animation: pulse-danger 1.8s infinite ease-in-out;
-}
-
-.btn-danger-emergency:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 28px rgba(239, 68, 68, 0.9);
+.rainbow-circle-btn.btn-violet {
+  background: radial-gradient(circle at 35% 35%, #D799F2 0%, var(--rainbow-violet) 60%, #5E1780 100%);
+  --btn-glow: var(--rainbow-violet-glow);
+  --btn-glow-strong: 0 0 25px rgba(175, 82, 222, 0.9);
 }
 
 /* --------------------------------------------------------------------------
-   3. 5종 마약 감지 변색 색상 칩 (Chemical Swatches)
+   5. 하단 4개 내비게이션 바 (Bottom Navigation Bar)
    -------------------------------------------------------------------------- */
-.sensor-chips-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
+.bottom-nav-bar {
+  height: 72px;
+  background: rgba(12, 13, 16, 0.95);
+  border-top: 1px solid var(--border-gold);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 10px 10px 10px;
+  position: relative;
+  z-index: 60;
+  backdrop-filter: blur(16px);
 }
 
-.sensor-chip {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  transition: color 0.2s ease;
+  width: 68px;
+}
+
+.nav-item.active, .nav-item:hover {
+  color: var(--text-gold);
+}
+
+.nav-icon {
+  font-size: 1.15rem;
+}
+
+/* 중앙 하단 🚨 SOS 비상 버튼 (Center Glowing Red Shield) */
+.nav-item-sos-center {
+  position: relative;
+  top: -14px;
+}
+
+.sos-circle-trigger {
+  width: 52px;
+  height: 52px;
+  background: radial-gradient(circle at 35% 35%, #FF6565 0%, #DC2626 60%, #7F1D1D 100%);
+  border: 2px solid #FF8080;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 22px rgba(239, 68, 68, 0.8);
+  animation: pulse-sos 2s infinite ease-in-out;
+  color: #FFF;
+}
+
+@keyframes pulse-sos {
+  0%, 100% { box-shadow: 0 0 16px rgba(239, 68, 68, 0.6); transform: scale(1); }
+  50% { box-shadow: 0 0 30px rgba(239, 68, 68, 1); transform: scale(1.08); }
+}
+
+.sos-label-text {
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #FFF;
+}
+
+/* --------------------------------------------------------------------------
+   6. 서브 뷰 및 전용 팝업 모달 (Store, History, Emergency, Tech Info)
+   -------------------------------------------------------------------------- */
+.subview-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-full-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 12, 0.92);
+  backdrop-filter: blur(14px);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  overflow-y: auto;
+}
+
+.modal-card {
+  background: rgba(22, 23, 30, 0.95);
+  border: 1px solid var(--border-gold);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+}
+
+.store-item-card {
+  background: rgba(30, 31, 40, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
   padding: 14px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  transition: all var(--transition-fast);
+  margin-bottom: 12px;
 }
 
-.sensor-chip:hover {
-  transform: translateY(-2px);
-  border-color: var(--chip-color, var(--color-primary));
-}
-
-.sensor-dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--chip-color, #FFF);
-  box-shadow: 0 0 10px var(--chip-color, #FFF);
-}
-
-/* --------------------------------------------------------------------------
-   4. 기존 키트 대비 차별점 고대비 비교표 (Comparison Table)
-   -------------------------------------------------------------------------- */
-.table-wrapper {
-  overflow-x: auto;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-surface-card);
-}
-
-.matrix-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.875rem;
-}
-
-.matrix-table th, .matrix-table td {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border-subtle);
-  white-space: nowrap;
-}
-
-.matrix-table th {
-  background: rgba(15, 23, 42, 0.9);
-  color: var(--text-secondary);
-  font-weight: 700;
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.matrix-table th.highlight-col, .matrix-table td.highlight-col {
-  background: rgba(225, 29, 72, 0.08);
-  border-left: 1px solid rgba(225, 29, 72, 0.3);
-  border-right: 1px solid rgba(225, 29, 72, 0.3);
-}
-
-/* --------------------------------------------------------------------------
-   5. 모달 오버레이 & 폼 스타일
-   -------------------------------------------------------------------------- */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: var(--backdrop-blur);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--transition-normal);
-  padding: 20px;
-}
-
-.modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.modal-box {
-  background: var(--bg-surface-card);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-xl);
-  padding: 32px;
-  width: 100%;
-  max-width: 540px;
-  box-shadow: var(--shadow-lg);
-  transform: scale(0.95);
-  transition: transform var(--transition-bounce);
-}
-
-.modal-overlay.active .modal-box {
-  transform: scale(1);
-}
-
-.form-group {
+.history-log-card {
+  background: rgba(22, 23, 30, 0.8);
+  border-left: 4px solid var(--log-color, var(--gold-primary));
+  border-radius: 12px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
-.form-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.form-input, .form-textarea {
-  width: 100%;
-  padding: 10px 14px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-  font-family: inherit;
-  font-size: 0.9rem;
-  transition: border-color var(--transition-fast);
-}
-
-.form-input:focus, .form-textarea:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.25);
-}
-
-/* --------------------------------------------------------------------------
-   6. 키프레임 애니메이션
-   -------------------------------------------------------------------------- */
-@keyframes pulse-danger {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 26px rgba(239, 68, 68, 0.85);
-    transform: scale(1.03);
-  }
-}

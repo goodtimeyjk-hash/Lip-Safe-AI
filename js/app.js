@@ -1,68 +1,86 @@
 /**
- * Lip-Safe AI - 메인 애플리케이션 진입점 (Main Entry Point)
- * 독립된 UI 컴포넌트를 각각의 HTML 컨테이너에 마운트하고 뷰 초기화를 수행합니다.
- * (모든 주석 한글 작성)
+ * Lip-Safe AI - 메인 애플리케이션 진입점 (Main Application Entry Point)
+ * 3D 골드 립스틱 AI 판독기, 7가지 무지개 컨트롤러, 성분 분석 팝업, SOS 모달을 바인딩합니다.
  */
-import { renderHeader } from './components/Header.js';
-import { renderProfileCard } from './components/ProfileCard.js';
-import { renderHeroShowcase } from './components/HeroShowcase.js';
-import { renderEdgeAISimulator } from './components/EdgeAISimulator.js';
-import { renderChemicalSensors } from './components/ChemicalSensors.js';
-import { renderComparisonTable } from './components/ComparisonTable.js';
-import { renderWorksGallery } from './components/WorksGallery.js';
-import { renderAdminDashboard } from './components/AdminDashboard.js';
-import { renderEmergencyReportModal } from './components/EmergencyReportModal.js';
-import { renderAdminEditModal } from './components/AdminEditModal.js';
-import { renderContactFooter } from './components/ContactFooter.js';
+import { store } from './store.js';
+import { renderLipstickScanner } from './components/LipstickScanner.js';
+import { renderAnalysisPopup } from './components/AnalysisPopup.js';
+import { renderRainbowController } from './components/RainbowController.js';
+import { renderBottomNav } from './components/BottomNav.js';
+import { renderEmergencySOSModal } from './components/EmergencySOSModal.js';
+import { renderSpectrumTechModal } from './components/SpectrumTechModal.js';
+import { renderReagentStoreView } from './components/ReagentStoreView.js';
+import { renderHistoryLogView } from './components/HistoryLogView.js';
 import { showToast } from './utils/notifications.js';
 
-/**
- * DOM 로드 완료 후 컴포넌트 마운트 초기화 실행
- */
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. 헤더 바인딩
-  const headerElem = document.getElementById('header-container');
-  if (headerElem) renderHeader(headerElem);
+  const deviceShell = document.getElementById('mobile-device-shell');
+  const scannerWrapper = document.getElementById('scanner-view-wrapper');
 
-  // 2. 김영주 개발자 프로필 카드 마운트
-  const profileElem = document.getElementById('profile-container');
-  if (profileElem) renderProfileCard(profileElem);
+  // 1.0 3D 골드 립스틱 스캐너 마운트
+  const scannerContainer = document.getElementById('scanner-container');
+  if (scannerContainer) renderLipstickScanner(scannerContainer);
 
-  // 3. Lip-Safe AI 메인 히어로 쇼케이스 (99.2% / 0.3초 지표) 마운트
-  const heroElem = document.getElementById('hero-showcase-container');
-  if (heroElem) renderHeroShowcase(heroElem);
+  // 2.0 성분 분석 팝업 오버레이 마운트
+  const popupContainer = document.getElementById('analysis-popup-container');
+  if (popupContainer) renderAnalysisPopup(popupContainer);
 
-  // 4. 어두운 조명 보정 & 온디바이스 엣지AI 판독 시뮬레이터 마운트
-  const simElem = document.getElementById('edge-ai-simulator-container');
-  if (simElem) renderEdgeAISimulator(simElem);
+  // 3.0 7가지 무지개 원형 스마트 버튼 컨트롤러 마운트
+  const rainbowContainer = document.getElementById('rainbow-controller-container');
+  if (rainbowContainer) renderRainbowController(rainbowContainer);
 
-  // 5. 5종 마약 감지 변색 색상 칩 마운트
-  const sensorsElem = document.getElementById('chemical-sensors-container');
-  if (sensorsElem) renderChemicalSensors(sensorsElem);
+  // 4.0 하단 내비게이션 바 마운트
+  const bottomNavContainer = document.getElementById('bottom-nav-container');
+  if (bottomNavContainer) renderBottomNav(bottomNavContainer);
 
-  // 6. 차별점 고대비 비교표 Table 마운트
-  const tableElem = document.getElementById('comparison-table-container');
-  if (tableElem) renderComparisonTable(tableElem);
+  // 5.0 비상 SOS 긴급 대응 모달 마운트
+  const modalContainer = document.getElementById('modal-container');
+  if (modalContainer) {
+    renderEmergencySOSModal(modalContainer);
+    renderSpectrumTechModal(modalContainer);
+  }
 
-  // 7. Lip-Safe AI 주요 작업물 및 프로젝트 카드 갤러리 마운트
-  const galleryElem = document.getElementById('works-gallery-container');
-  if (galleryElem) renderWorksGallery(galleryElem);
+  // 6.0 서브 뷰 마운트 (스토어 & 기록)
+  const subviewContainer = document.getElementById('subview-container');
+  if (subviewContainer) {
+    renderReagentStoreView(subviewContainer);
+    renderHistoryLogView(subviewContainer);
+  }
 
-  // 8. 제작자 김영주 전용 관리자 대시보드 페이지 마운트
-  const adminDashboardElem = document.getElementById('admin-dashboard-container');
-  if (adminDashboardElem) renderAdminDashboard(adminDashboardElem);
+  // 7.0 글로벌 상태 반응 리스너
+  store.subscribe(s => {
+    // 5600K 스튜디오 조명 활성화 여부
+    if (deviceShell) {
+      if (s.isStudioLightOn) {
+        deviceShell.classList.add('studio-light-active');
+      } else {
+        deviceShell.classList.remove('studio-light-active');
+      }
+    }
 
-  // 9. 하단 문의 푸터 마운트
-  const footerElem = document.getElementById('contact-footer-container');
-  if (footerElem) renderContactFooter(footerElem);
+    // 탭 전환 시 뷰 토글
+    if (scannerWrapper) {
+      if (s.activeTab === 'shutter') {
+        scannerWrapper.style.display = 'block';
+      } else {
+        scannerWrapper.style.display = 'none';
+      }
+    }
+  });
 
-  // 10. 🚨 112 긴급 신고 모달 & ⚙️ 관리자 Auth 로그인 모달 마운트
-  const emergencyModalElem = document.getElementById('emergency-modal-container');
-  if (emergencyModalElem) renderEmergencyReportModal(emergencyModalElem);
+  // 8.0 좌측 원터치 컨트롤 패널 버튼 리스너 바인딩
+  document.getElementById('btn-trigger-danger')?.addEventListener('click', () => {
+    store.startAIScan('danger');
+  });
 
-  const adminModalElem = document.getElementById('admin-modal-container');
-  if (adminModalElem) renderAdminEditModal(adminModalElem);
+  document.getElementById('btn-trigger-warning')?.addEventListener('click', () => {
+    store.startAIScan('warning');
+  });
 
-  // 11. 환영 토스트 알림 노출
-  showToast('👋 Lip-Safe AI (제작자: 김영주) 서비스에 오신 것을 환영합니다!', 'info', 3500);
+  document.getElementById('btn-trigger-safe')?.addEventListener('click', () => {
+    store.startAIScan('safe');
+  });
+
+  // 환영 토스트 메시지
+  showToast('💄 Lip-Safe AI 1초 변색 판독 시스템이 활성화되었습니다!', 'info', 3000);
 });
